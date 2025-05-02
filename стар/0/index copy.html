@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Облачко</title>
+    <link rel="stylesheet" href="css/style.css">
+</head> 
+<body>
+    <div class="content1"></div> 
+    <div class="content2"></div> 
+    <div class="content3"></div> 
+   
+    <div class="registration-block">
+        <h2 class="section-header ">Регистрация</h2>
+        <label for="first_name">Фамилия</label>
+        <input type="text" name="first_name" id="" placeholder="Фамилия" value="first_user">
+        <label for="last_name">Имя</label>
+        <input type="text" name="last_name" id="" placeholder="Имя" value="last_user">
+        <label for="email">E-mail</label>
+        <input type="text" name="email" id="" placeholder="E-mail" value="user@user.ru">
+        <label for="password">Пароль</label>
+        <input type="text" name="password" id="" placeholder="Пароль" value="1">
+        <div class="btn-reg">
+            <button class="register">Регистрация</button>
+        </div>    
+        <div class="message"></div>
+    </div>
+
+    <script>
+        const HOST = 'http://web-app.api-web-tech.local';
+        let url = `${HOST}/registration`
+        let body1 = document.querySelector('.content1')
+        let body2 = document.querySelector('.content2')
+        let body3 = document.querySelector('.content3')
+
+        document.querySelector('.register').addEventListener('click', function(){
+            let req_data = new FormData();
+            req_data.append("email", document.querySelector('input[name="email"]').value)
+            req_data.append("password", document.querySelector('input[name="password"]').value)
+            req_data.append("last_name", document.querySelector('input[name="last_name"]').value)
+            req_data.append("first_name", document.querySelector('input[name="first_name"]').value)
+            console.log(document.querySelector('input[name="email"]').value)
+            console.log(document.querySelector('input[name="email"]').value)
+            console.log(document.querySelector('input[name="email"]').value)
+            console.log(document.querySelector('input[name="email"]').value)
+
+            let req = new XMLHttpRequest();
+            req.open('POST', url)
+            req.send(req_data)
+            req.onreadystatechange = function(){
+                if (req.readyState==4){
+                    res = JSON.parse(req.responseText)
+                    console.log('req', req)
+                    console.log('res', res)
+                    
+                    document.querySelector('.message').textContent = res["message"]
+                    console.log('status',req.status)
+                    if (req.status == 422){
+                        document.querySelector('.message').textContent = res.message.email[0]
+                        console.log('1', res.message.email)
+                    }else if (req.status == 200){
+                        document.querySelector('.message').textContent = res.message
+                        console.log('2',res.message)
+                    }
+                }
+            }
+        })
+        
+    </script>
+</body>
+</html>
